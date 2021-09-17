@@ -16,7 +16,9 @@ namespace Mastermind
 
         private int currentRowIndex;
 
-        private bool einde;
+        private bool end;
+
+        private readonly Color[] mainColors = {Color.Red, Color.Blue, Color.Yellow, Color.Green, Color.Orange, Color.Indigo };
 
         public Form1()
         {   
@@ -34,7 +36,7 @@ namespace Mastermind
             {
                 int number;
                 do {
-                    number = rnd.Next(1, amountOfColours+1);
+                    number = rnd.Next(0, amountOfColours);
                 } while (numbers.Contains(number));
                 numbers.Add(number);
             }
@@ -42,30 +44,7 @@ namespace Mastermind
             List<Color> colors = new List<Color>();
             foreach (var numb in numbers)
             {
-                if (numb == 1)
-                {
-                    colors.Add(Color.Red);
-                }
-                else if(numb == 2)
-                {
-                    colors.Add(Color.Blue);
-                }
-                else if(numb == 3)
-                {
-                    colors.Add(Color.Yellow);
-                }
-                else if(numb == 4)
-                {
-                    colors.Add(Color.Green);
-                }
-                else if(numb == 5)
-                {
-                    colors.Add(Color.Orange);
-                }
-                else if(numb == 6)
-                {
-                    colors.Add(Color.Indigo);
-                }
+                colors.Add(mainColors[numb]);
             }
             
             code = new[]
@@ -131,7 +110,7 @@ namespace Mastermind
 
             if (row.rightColorRightPosition == 4)
             {
-                einde = true;
+                end = true;
                 winText.Text = "Gefeliciteerd je hebt gewonnen, wil je nog een keer spelen?";
                 winButton1.Visible = true;
                 winButton2.Visible = true;
@@ -148,7 +127,7 @@ namespace Mastermind
                 winText.Text = "Helaas je hebt het niet geraden de code was: " + text + "wil je nog een keer spelen?";
                 winButton1.Visible = true;
                 winButton2.Visible = true;
-                einde = true;
+                end = true;
             }
         }
 
@@ -162,7 +141,7 @@ namespace Mastermind
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (einde) return;
+            if (end) return;
             CreateRow();
             label1.BackColor = Color.Empty;
             label2.BackColor = Color.Empty;
@@ -173,7 +152,7 @@ namespace Mastermind
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(einde) return;
+            if(end) return;
             if (e.KeyCode == Keys.Back && currentIndex != 1)
             {
                 currentIndex--;
@@ -182,32 +161,32 @@ namespace Mastermind
             if (currentIndex== 5) return;
             if (e.KeyCode == Keys.F1)
             {
-                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Red;
+                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = mainColors[0];
                 currentIndex++;
             }
             if (e.KeyCode == Keys.F2)
             {
-                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Blue;
+                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = mainColors[1];
                 currentIndex++;
             }
             if (e.KeyCode == Keys.F3)
             {
-                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Yellow;
+                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = mainColors[2];
                 currentIndex++;
             }
             if (e.KeyCode == Keys.F4)
             {
-                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Green;
+                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = mainColors[3];
                 currentIndex++;
             }
             if (e.KeyCode == Keys.F5)
             {
-                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Orange;
+                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = mainColors[4];
                 currentIndex++;
             }
             if (e.KeyCode == Keys.F6)
             {
-                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Indigo;
+                ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = mainColors[5];
                 currentIndex++;
             }
         }
