@@ -10,22 +10,21 @@ namespace Mastermind
 {
     public partial class Form1 : Form
     {
-        public Random rnd = new Random();
+        private readonly Random rnd = new Random();
 
-        public ColorPin[] code;
+        private ColorPin[] code;
 
-        public int currentRowIndex;
+        private int currentRowIndex;
 
-        public bool einde;
+        private bool einde;
 
         public Form1()
         {   
             InitializeComponent();
             GenerateCode();
-            //Inspector inspector = new Inspector();
         }
 
-        public void GenerateCode()
+        private void GenerateCode()
         {
             List<int> numbers = new List<int>();
             
@@ -71,14 +70,14 @@ namespace Mastermind
             
             code = new[]
             {
-                new ColorPin(code, colors[0], 1),
-                new ColorPin(code, colors[1], 2),
-                new ColorPin(code, colors[2], 3),
-                new ColorPin(code, colors[3],4)
+                new ColorPin(colors[0], 1),
+                new ColorPin(colors[1], 2),
+                new ColorPin(colors[2], 3),
+                new ColorPin(colors[3],4)
             };
         }
 
-        public void CreateRow()
+        private void CreateRow()
         {
             foreach (var value in code)
             {
@@ -86,26 +85,24 @@ namespace Mastermind
             }
             var pins = new[]
             {
-                new ColorPin(code, label1.BackColor, 1), 
-                new ColorPin(code, label2.BackColor, 2), 
-                new ColorPin(code, label3.BackColor, 3),
-                new ColorPin(code, label4.BackColor, 4)
+                new ColorPin(label1.BackColor, 1), 
+                new ColorPin(label2.BackColor, 2), 
+                new ColorPin(label3.BackColor, 3),
+                new ColorPin(label4.BackColor, 4)
             };
             
-            var row = new Row(1, pins, code);
+            var row = new Row(pins, code);
 
             Panel mainRow = new RowPanel();
             var mainRowLocation = mainRow.Location;
             mainRowLocation.Y -= 50*currentRowIndex;
             mainRow.Location = mainRowLocation;
+            
             mainRow.Visible = true;
+            
             for (int i = 1; i < 5; i++)
             {
                 ((Panel) mainRow.Controls.Find("red" + i, true).FirstOrDefault()).BackColor = Color.Gray;
-            }
-
-            for (int i = 1; i < 5; i++)
-            {
                 ((Label) mainRow.Controls.Find("indicator" + i, true).FirstOrDefault()).BackColor = pins[i-1].value;
             }
             for (int i = 0; i < row.rightColor; i++)
@@ -155,7 +152,7 @@ namespace Mastermind
             }
         }
 
-        public void Reset()
+        private static void Reset()
         {
             Application.Restart();
             Environment.Exit(0);
@@ -213,21 +210,28 @@ namespace Mastermind
                 ((Label) Controls.Find("label" + currentIndex, true).FirstOrDefault()).BackColor = Color.Indigo;
                 currentIndex++;
             }
+        }
+        
+        private void winButton1_Click(object sender, EventArgs e)
+        {
+            Reset();
+        }
 
+        private void winButton2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         public class Row
         {
-            public int rowNumber;
-            public int rightColorRightPosition;
-            public int rightColor;
+            public readonly int rightColorRightPosition;
+            public readonly int rightColor;
 
             public ColorPin[] pins;
             public int indicatorIndex=1;
 
-            public Row(int rowNumber, ColorPin[] pins, ColorPin[] code)
+            public Row(ColorPin[] pins, ColorPin[] code)
             {
-                this.rowNumber = rowNumber;
                 this.pins = pins;
 
                 for (var i = 0; i < code.Length; i++)
@@ -255,21 +259,11 @@ namespace Mastermind
             public int position;
             public bool hasBeenChecked;
 
-            public ColorPin(ColorPin[] code, Color value, int position = 0)
+            public ColorPin(Color value, int position = 0)
             {
                 this.value = value;
                 this.position = position;
             }
-        }
-
-        private void winButton1_Click(object sender, EventArgs e)
-        {
-            Reset();
-        }
-
-        private void winButton2_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
