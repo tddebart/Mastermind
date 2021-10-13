@@ -1,6 +1,7 @@
 ﻿# Mastermind
 ## Usage
-Just download the release zip and run the .exe
+Just download the release zip and run the .exe.
+
 You need to have `.net 5.0 runtime` installed
 
 ## Screenshots
